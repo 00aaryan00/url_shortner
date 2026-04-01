@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Account</title>
+    <style>
+      :root {
+        --bg: #f1ede6;
+        --surface: rgba(255, 251, 245, 0.92);
+        --text: #1f2933;
+        --muted: #52606d;
+        --accent: #0f766e;
+        --accent-dark: #115e59;
+        --border: #d8d2c7;
+        --error-bg: #fdecec;
+        --error-text: #9b1c1c;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: linear-gradient(145deg, #f4f0e8 0%, #dfebe7 100%);
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        color: var(--text);
+      }
+
+      .card {
+        width: min(460px, 100%);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 28px;
+        box-shadow: 0 24px 70px rgba(59, 71, 67, 0.14);
+      }
+
+      h1 {
+        margin-top: 0;
+        margin-bottom: 8px;
+      }
+
+      p {
+        color: var(--muted);
+      }
+
+      form {
+        display: grid;
+        gap: 12px;
+        margin-top: 24px;
+      }
+
+      label {
+        font-weight: 600;
+      }
+
+      input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        font-size: 1rem;
+      }
+
+      button {
+        border: none;
+        border-radius: 999px;
+        background: var(--accent);
+        color: white;
+        padding: 12px 18px;
+        font-size: 0.95rem;
+        font-weight: 700;
+        cursor: pointer;
+        margin-top: 8px;
+      }
+
+      button:hover {
+        background: var(--accent-dark);
+      }
+
+      .message {
+        border-radius: 14px;
+        padding: 14px 16px;
+        margin-top: 16px;
+        background: var(--error-bg);
+        color: var(--error-text);
+      }
+
+      .footer-link {
+        margin-top: 18px;
+      }
+
+      .footer-link a {
+        color: var(--accent);
+        text-decoration: none;
+        font-weight: 600;
+      }
+    </style>
+  </head>
+  <body>
+    <section class="card">
+      <h1>Create your account</h1>
+      <p>Start saving short links tied to your own dashboard.</p>
+
+      <% if (error) { %>
+      <div class="message"><%= error %></div>
+      <% } %>
+
+      <form action="/user" method="post">
+        <label for="name">Full name</label>
+        <input id="name" type="text" required name="name" value="<%= formData?.name || '' %>" />
+
+        <label for="email">Email</label>
+        <input id="email" type="email" required name="email" value="<%= formData?.email || '' %>" />
+
+        <label for="password">Password</label>
+        <input id="password" type="password" required name="password" minlength="8" />
+
+        <button type="submit">Create account</button>
+      </form>
+
+      <p class="footer-link">Already have an account? <a href="/login">Log in</a></p>
+    </section>
+  </body>
+</html>
