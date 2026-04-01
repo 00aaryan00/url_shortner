@@ -67,16 +67,9 @@ short-url-nodejs/
 - The user is redirected to the original destination.
 - Authenticated users can view analytics for their own short URLs.
 
-## Environment Variables
 
-Create a `.env` file in the project root.
 
-```env
-JWT_SECRET=your-super-secret-key
-MONGODB_URL=mongodb+srv://username:password@cluster.mongodb.net/short-url?retryWrites=true&w=majority
-PORT=8001
-APP_BASE_URL=http://localhost:8001
-```
+
 
 ### Variable Reference
 
