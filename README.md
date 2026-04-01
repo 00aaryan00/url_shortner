@@ -57,7 +57,7 @@ short-url-nodejs/
 ### URL Shortening
 
 - Logged-in users can submit a destination URL from the dashboard.
-- The app validates the URL and generates a short ID using `nanoid`.
+- The app validates the URL and generates a short ID.
 - If the same user shortens the same destination again, the app returns the existing short link instead of creating duplicates.
 
 ### Redirects and Analytics
@@ -67,9 +67,16 @@ short-url-nodejs/
 - The user is redirected to the original destination.
 - Authenticated users can view analytics for their own short URLs.
 
+## Environment Variables
 
+Create a `.env` file in the project root.
 
-
+```env
+JWT_SECRET=your-super-secret-key
+MONGODB_URL=mongodb+srv://username:password@cluster.mongodb.net/short-url?retryWrites=true&w=majority
+PORT=8001
+APP_BASE_URL=http://localhost:8001
+```
 
 ### Variable Reference
 
