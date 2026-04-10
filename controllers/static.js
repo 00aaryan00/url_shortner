@@ -9,23 +9,35 @@ async function renderHome(req, res) {
     return res.redirect("/login");
   }
 
-  const urls = await URL.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
-  const createdShortId = req.query.created?.trim();
-  const generatedShortUrl = createdShortId ? `${getBaseUrl(req)}/url/${createdShortId}` : "";
-  const success = createdShortId
-    ? req.query.existing === "1"
-      ? "That destination already had a short URL, so the existing one is shown below."
-      : "Short URL created successfully."
-    : "";
+  try {
+    const urls = await URL.find({ createdBy: req.user._id }).sort({ createdAt: -1 });
+    const createdShortId = req.query.created?.trim();
+    const generatedShortUrl = createdShortId ? `${getBaseUrl(req)}/url/${createdShortId}` : "";
+    const success = createdShortId
+      ? req.query.existing === "1"
+        ? "That destination already had a short URL, so the existing one is shown below."
+        : "Short URL created successfully."
+      : "";
 
-  return res.render("home", {
-    error: "",
-    success,
-    generatedShortUrl,
-    formData: { url: "" },
-    urls,
-    baseUrl: getBaseUrl(req),
-  });
+    return res.render("home", {
+      error: "",
+      success,
+      generatedShortUrl,
+      formData: { url: "" },
+      urls,
+      baseUrl: getBaseUrl(req),
+    });
+  } catch (error) {
+    console.error("❌ renderHome error:", error.message);
+    return res.status(500).render("home", {
+      error: "Unable to load your URLs. Please refresh the page.",
+      success: "",
+      generatedShortUrl: "",
+      formData: { url: "" },
+      urls: [],
+      baseUrl: getBaseUrl(req),
+    });
+  }
 }
 
 function renderSignup(req, res) {
