@@ -57,17 +57,22 @@ function signToken(user) {
 function verifyToken(token) {
   if (!token) return null;
 
-  const parts = token.split(".");
-  if (parts.length !== 3) return null;
-
-  const [header, payload, signature] = parts;
-  const expectedSignature = createSignature(`${header}.${payload}`);
-
-  if (!crypto.timingSafeEqual(Buffer.from(signature), Buffer.from(expectedSignature))) {
-    return null;
-  }
-
   try {
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+
+    const [header, payload, signature] = parts;
+    const providedSignature = Buffer.from(signature);
+    const expectedSignature = Buffer.from(createSignature(`${header}.${payload}`));
+
+    if (providedSignature.length !== expectedSignature.length) {
+      return null;
+    }
+
+    if (!crypto.timingSafeEqual(providedSignature, expectedSignature)) {
+      return null;
+    }
+
     const decodedPayload = JSON.parse(fromBase64Url(payload));
     if (decodedPayload.exp && decodedPayload.exp < Math.floor(Date.now() / 1000)) {
       return null;

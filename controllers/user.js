@@ -10,6 +10,7 @@ const { hashPassword, comparePassword } = require("../service/password");
 const COOKIE_OPTIONS = {
   httpOnly: true,
   sameSite: "lax",
+  secure: process.env.NODE_ENV === "production",
   maxAge: 1000 * 60 * 60 * 24 * 7,
 };
 
@@ -84,7 +85,11 @@ async function handleUserLogin(req, res) {
 }
 
 function handleUserLogout(req, res) {
-  res.clearCookie("uid", { httpOnly: true, sameSite: "lax" });
+  res.clearCookie("uid", {
+    httpOnly: true,
+    sameSite: "lax",
+    secure: process.env.NODE_ENV === "production",
+  });
   return res.redirect("/login");
 }
 
