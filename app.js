@@ -23,6 +23,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(checkAuth);
 
+// Health check endpoint (no DB required)
+app.get("/_health", (req, res) => {
+  res.status(200).json({ status: "ok", timestamp: new Date().toISOString() });
+});
+
 app.get("/url/:shortId", ensureDatabase, asyncHandler(handleRedirectShortURL));
 app.use("/url", ensureDatabase, restrictToLoggedinUserOnly, urlRoute);
 app.use("/user", ensureDatabase, userRoute);
@@ -36,7 +41,7 @@ app.use((req, res) => {
 });
 
 app.use((error, req, res, next) => {
-  console.error(error);
+  console.error("❌ Error:", error);
 
   if (res.headersSent) {
     return next(error);
