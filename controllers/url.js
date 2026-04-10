@@ -54,7 +54,7 @@ async function handleGenerateNewShortURL(req, res) {
   });
 
   if (existingUrl) {
-    return res.redirect(`/?created=${existingUrl.shortId}&existing=1`);
+    return res.redirect(303, `/?created=${existingUrl.shortId}&existing=1`);
   }
 
   const shortId = nanoid(8);
@@ -65,7 +65,7 @@ async function handleGenerateNewShortURL(req, res) {
     createdBy: req.user._id,
   });
 
-  return res.redirect(`/?created=${shortId}`);
+  return res.redirect(303, `/?created=${shortId}`);
 }
 
 async function handleGetAnalytics(req, res) {

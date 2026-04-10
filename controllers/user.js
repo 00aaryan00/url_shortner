@@ -53,7 +53,7 @@ async function handleUserSignup(req, res) {
 
   const token = signToken(user);
   res.cookie("uid", token, COOKIE_OPTIONS);
-  return res.redirect("/");
+  return res.redirect(303, "/");
 }
 
 async function handleUserLogin(req, res) {
@@ -81,7 +81,7 @@ async function handleUserLogin(req, res) {
 
   const token = signToken(user);
   res.cookie("uid", token, COOKIE_OPTIONS);
-  return res.redirect("/");
+  return res.redirect(303, "/");
 }
 
 function handleUserLogout(req, res) {
