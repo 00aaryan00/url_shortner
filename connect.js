@@ -9,10 +9,15 @@ async function connectToMongoDB(url) {
   }
 
   if (!connectionPromise) {
-    connectionPromise = mongoose.connect(url).catch((error) => {
-      connectionPromise = null;
-      throw error;
-    });
+    connectionPromise = mongoose
+      .connect(url, {
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 10000,
+      })
+      .catch((error) => {
+        connectionPromise = null;
+        throw error;
+      });
   }
 
   return connectionPromise;
