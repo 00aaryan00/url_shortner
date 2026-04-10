@@ -28,12 +28,12 @@ app.use("/url", ensureDatabase, restrictToLoggedinUserOnly, urlRoute);
 app.use("/user", ensureDatabase, userRoute);
 app.use("/", staticRoute);
 
-// app.use((req, res) => {
-//   res.status(404).render("notFound", {
-//     title: "Page not found",
-//     message: "The page you requested does not exist.",
-//   });
-// });
+app.use((req, res) => {
+  res.status(404).render("notFound", {
+    title: "Page not found",
+    message: "The page you requested does not exist.",
+  });
+});
 
 app.use((error, req, res, next) => {
   console.error("❌ Error:", error);
