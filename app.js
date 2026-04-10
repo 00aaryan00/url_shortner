@@ -3,8 +3,8 @@ require("dotenv").config();
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const { connectToMongoDB } = require("./connect");
 const { restrictToLoggedinUserOnly, checkAuth } = require("./middlewares/auth");
+const { ensureDatabase } = require("./middlewares/database");
 const asyncHandler = require("./middlewares/asyncHandler");
 const { handleRedirectShortURL } = require("./controllers/url");
 
@@ -13,7 +13,6 @@ const staticRoute = require("./routes/staticRouter");
 const userRoute = require("./routes/user");
 
 const app = express();
-const MONGODB_URL = process.env.MONGODB_URL || "mongodb://localhost:27017/short-url";
 
 app.set("trust proxy", 1);
 app.set("view engine", "ejs");
@@ -24,9 +23,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(checkAuth);
 
-app.get("/url/:shortId", asyncHandler(handleRedirectShortURL));
-app.use("/url", restrictToLoggedinUserOnly, urlRoute);
-app.use("/user", userRoute);
+app.get("/url/:shortId", ensureDatabase, asyncHandler(handleRedirectShortURL));
+app.use("/url", ensureDatabase, restrictToLoggedinUserOnly, urlRoute);
+app.use("/user", ensureDatabase, userRoute);
 app.use("/", staticRoute);
 
 app.use((req, res) => {
@@ -50,11 +49,6 @@ app.use((error, req, res, next) => {
   });
 });
 
-async function ensureAppReady() {
-  await connectToMongoDB(MONGODB_URL);
-}
-
 module.exports = {
   app,
-  ensureAppReady,
 };
