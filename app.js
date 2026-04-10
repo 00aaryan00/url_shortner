@@ -44,7 +44,7 @@ app.use((error, req, res, next) => {
 
   const statusCode = error.statusCode || 500;
   return res.status(statusCode).render("notFound", {
-    title: statusCode === 500 ? "Something went wrong" : "Request failed",
+    title: title,
     message: error.message || "An unexpected error occurred.",
   });
 });
