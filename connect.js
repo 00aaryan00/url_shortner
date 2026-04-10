@@ -11,14 +11,10 @@ async function connectToMongoDB(url) {
   if (!connectionPromise) {
     connectionPromise = mongoose
       .connect(url, {
-        serverSelectionTimeoutMS: 30000,
-        socketTimeoutMS: 45000,
-        connectTimeoutMS: 30000,
-        maxPoolSize: 10,
-        minPoolSize: 2,
+        serverSelectionTimeoutMS: 5000,
+        socketTimeoutMS: 10000,
       })
       .catch((error) => {
-        console.error("MongoDB connection error:", error.message);
         connectionPromise = null;
         throw error;
       });

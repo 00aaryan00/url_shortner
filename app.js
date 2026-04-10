@@ -36,17 +36,15 @@ app.use((req, res) => {
 });
 
 app.use((error, req, res, next) => {
-  console.error("❌ Error:", error);
+  console.error(error);
 
   if (res.headersSent) {
     return next(error);
   }
 
   const statusCode = error.statusCode || 500;
-  const title = statusCode === 404 ? "Page not found" : statusCode === 500 ? "Something went wrong" : "Request failed";
-  
   return res.status(statusCode).render("notFound", {
-    title: title,
+    title: statusCode === 500 ? "Something went wrong" : "Request failed",
     message: error.message || "An unexpected error occurred.",
   });
 });
