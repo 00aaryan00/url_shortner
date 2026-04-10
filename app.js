@@ -28,12 +28,12 @@ app.use("/url", ensureDatabase, restrictToLoggedinUserOnly, urlRoute);
 app.use("/user", ensureDatabase, userRoute);
 app.use("/", staticRoute);
 
-app.use((req, res) => {
-  res.status(404).render("notFound", {
-    title: "Page not found",
-    message: "The page you requested does not exist.",
-  });
-});
+// app.use((req, res) => {
+//   res.status(404).render("notFound", {
+//     title: "Page not found",
+//     message: "The page you requested does not exist.",
+//   });
+// });
 
 app.use((error, req, res, next) => {
   console.error("❌ Error:", error);
@@ -43,6 +43,8 @@ app.use((error, req, res, next) => {
   }
 
   const statusCode = error.statusCode || 500;
+  const title = statusCode === 404 ? "Page not found" : statusCode === 500 ? "Something went wrong" : "Request failed";
+  
   return res.status(statusCode).render("notFound", {
     title: title,
     message: error.message || "An unexpected error occurred.",
